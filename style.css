@@ -1,0 +1,79 @@
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	font-size: 8pt;
+}
+.kode {
+	padding: 5px;
+	border: 1px solid black;
+	margin-left: 570px ;
+	font-weight: bold;
+	text-align: center;
+}
+.kotak {
+	border: 1px solid black;
+	width: 15px;
+	text-align: center;
+}
+.left {
+	text-align: left;
+	margin-left: 5px;
+}
+h4 {
+	text-align: center;
+	margin : 10px 0;
+}
+h5 {
+	margin: 3px;
+}
+table .label {
+	width: 200px;
+}
+table {
+
+  border-collapse: collapse;
+}
+table tr td {
+	/*border: 1px solid salmon;*/
+	padding: 0;
+}
+.bingkai {
+	border: 2px solid black;
+	line-height: 2px;
+	padding: 2px;
+}
+
+.col6 {
+	width:50%;
+	float:left;
+}
+.col6 .ttd_bawah {
+	margin-top: 35px;
+}
+.col6 p{
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+.col6 .ttd_bawah {
+	margin-top: 50px;
+}
+.col12 {
+	margin-top: 10px;
+	width:100%;
+}
+.tabel-penduduk tr td{
+	border: 1px solid black;
+}
+.tabel-penduduk {
+	width: 95.6%;
+	margin-left: 13px;
+}
+
+.tabel-laporan tr td{
+	border: 1px solid black;
+}

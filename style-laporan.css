@@ -1,0 +1,50 @@
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	font-size: 9pt;
+}
+.header {
+	text-align: center;
+}
+table {
+ 	border-collapse: collapse;
+}
+table tr td {
+	/*border: 1px solid salmon;*/
+	padding: 0;
+}
+
+.tabel-laporan {
+	margin-top: 0;
+	width: 100%;
+}
+.tabel-laporan tr td{
+	padding: 3px;
+	border: 1px solid black;
+}
+.tabel-laporan thead {
+	text-align: center;
+}
+.col6 {
+	width:50%;
+	float:left;
+}
+.col6 .ttd_bawah {
+	margin-top: 35px;
+}
+.col6 p{
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+.col6 .ttd_bawah {
+	margin-top: 50px;
+}
+.col12 {
+	margin-top: 10px;
+	width:100%;
+}
