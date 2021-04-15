@@ -423,8 +423,8 @@ class Penduduk extends CI_Controller
 					$pendidikan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
 					$pekerjaan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
 					$kewarganegaraan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					// $id_admin = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					// $update_at = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$nik_ayah = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$nik_ibu = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
 					$temp_data[] = array(
 						'nik'	=> $nik,
 						'nama'	=> $nama,
@@ -440,6 +440,8 @@ class Penduduk extends CI_Controller
 						'pendidikan'	=> $pendidikan,
 						'pekerjaan'	=> $pekerjaan,
 						'kewarganegaraan'	=> $kewarganegaraan,
+						'nik_ayah' => $nik_ayah,
+						'nik_ibu' => $nik_ibu,
 						'id_admin'	=> $this->session->userdata('id'),
 						'update_at'	=> date('d-M-Y')
 					);
