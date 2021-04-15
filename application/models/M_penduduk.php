@@ -11,6 +11,7 @@ class M_penduduk extends CI_Model
 	function tampil_data()
 	{
 		return $query = $this->db->query("SELECT * FROM penduduk INNER JOIN keluarga INNER JOIN pengguna ON penduduk.nik = keluarga.nik AND penduduk.id_admin = pengguna.id_admin WHERE status != '3' ORDER BY nik_kk DESC ");
+		// return $query = $this->db->query("SELECT * FROM penduduk INNER JOIN pengguna ON penduduk.id_admin = pengguna.id_admin WHERE status != '3'");
 	}
 	function tampil_penduduk_id($id)
 	{

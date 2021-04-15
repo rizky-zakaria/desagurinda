@@ -26,7 +26,6 @@ class Penduduk extends CI_Controller
 		$data['penduduk'] = $this->m_penduduk->tampil_data()->result();
 		$data['anggota'] = $this->m_penduduk->tampil_anggota_keluarga()->result();
 
-
 		$this->load->view('v_penduduk', $data);
 	}
 
@@ -247,7 +246,9 @@ class Penduduk extends CI_Controller
 			->setCellValue('K1', 'Alamat')
 			->setCellValue('L1', 'Pendidikan')
 			->setCellValue('M1', 'Pekerjaan')
-			->setCellValue('N1', 'Kewarganegaraan');
+			->setCellValue('N1', 'Kewarganegaraan')
+			->setCellValue('O1', 'NIK Ayah')
+			->setCellValue('P1', 'Nik Ibu');
 
 		$i = 2;
 
@@ -268,7 +269,9 @@ class Penduduk extends CI_Controller
 				->setCellValue('K' . $i, $row['alamat'])
 				->setCellValue('L' . $i, $row['pendidikan'])
 				->setCellValue('M' . $i, $row['pekerjaan'])
-				->setCellValue('N' . $i, $row['kewarganegaraan']);
+				->setCellValue('N' . $i, $row['kewarganegaraan'])
+				->setCellValue('O' . $i, $row['nik_ayah'])
+				->setCellValue('P' . $i, $row['nik_ibu']);
 			$i++;
 		}
 
