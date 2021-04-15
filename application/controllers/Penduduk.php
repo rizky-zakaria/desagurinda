@@ -409,22 +409,22 @@ class Penduduk extends CI_Controller
 				$highestRow = $worksheet->getHighestRow();
 				$highestColumn = $worksheet->getHighestColumn();
 				for ($row = 2; $row <= $highestRow; $row++) {
-					$nik = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
-					$nama = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
-					$jenis_kelamin = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$nik = $worksheet->getCellByColumnAndRow(0, $row)->getValue();
+					$nama = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
+					$jenis_kelamin = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
 					$tempat_lahir = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$tanggal_lahir = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$goldar = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$agama = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$hubungan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$status = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$dusun = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$alamat = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$pendidikan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$pekerjaan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$kewarganegaraan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$nik_ayah = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-					$nik_ibu = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$tanggal_lahir = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
+					$goldar = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
+					$agama = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
+					$hubungan = $worksheet->getCellByColumnAndRow(7, $row)->getValue();
+					$status = $worksheet->getCellByColumnAndRow(8, $row)->getValue();
+					$dusun = $worksheet->getCellByColumnAndRow(9, $row)->getValue();
+					$alamat = $worksheet->getCellByColumnAndRow(10, $row)->getValue();
+					$pendidikan = $worksheet->getCellByColumnAndRow(11, $row)->getValue();
+					$pekerjaan = $worksheet->getCellByColumnAndRow(12, $row)->getValue();
+					$kewarganegaraan = $worksheet->getCellByColumnAndRow(13, $row)->getValue();
+					$nik_ayah = $worksheet->getCellByColumnAndRow(14, $row)->getValue();
+					$nik_ibu = $worksheet->getCellByColumnAndRow(15, $row)->getValue();
 					$temp_data[] = array(
 						'nik'	=> $nik,
 						'nama'	=> $nama,
@@ -445,10 +445,13 @@ class Penduduk extends CI_Controller
 						'id_admin'	=> $this->session->userdata('id'),
 						'update_at'	=> date('d-M-Y')
 					);
+					// var_dump($temp_data);
+					// die;
 				}
 			}
 			$this->load->model('ImportModel');
-			$insert = $this->ImportModel->insert($temp_data);
+			// $insert = $this->ImportModel->insert($temp_data);
+			$insert = $this->db->insert_batch('penduduk', $temp_data);
 			if ($insert) {
 				$this->session->set_flashdata('status', '<span class="glyphicon glyphicon-ok"></span> Data Berhasil di Import ke Database');
 				redirect($_SERVER['HTTP_REFERER']);
