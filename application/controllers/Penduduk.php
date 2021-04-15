@@ -400,72 +400,62 @@ class Penduduk extends CI_Controller
 		}
 	}
 
-	public function importExcel()
+	public function import_excel()
 	{
-		$fileName = $_FILES['file']['name'];
-
-		$config['upload_path'] = './assets/'; //path upload
-		$config['file_name'] = $fileName;  // nama file
-		$config['allowed_types'] = 'xls|xlsx|csv'; //tipe file yang diperbolehkan
-		$config['max_size'] = 10000; // maksimal sizze
-
-		$this->load->library('upload'); //meload librari upload
-		$this->upload->initialize($config);
-
-		if (!$this->upload->do_upload('file')) {
-			echo $this->upload->display_errors();
-			exit();
+		if (isset($_FILES["file"]["name"])) {
+			$path = $_FILES["file"]["tmp_name"];
+			$object = PHPExcel_IOFactory::load($path);
+			foreach ($object->getWorksheetIterator() as $worksheet) {
+				$highestRow = $worksheet->getHighestRow();
+				$highestColumn = $worksheet->getHighestColumn();
+				for ($row = 2; $row <= $highestRow; $row++) {
+					$nik = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
+					$nama = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
+					$jenis_kelamin = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$tempat_lahir = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$tanggal_lahir = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$goldar = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$agama = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$hubungan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$status = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$dusun = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$alamat = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$pendidikan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$pekerjaan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$kewarganegaraan = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					// $id_admin = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					// $update_at = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+					$temp_data[] = array(
+						'nik'	=> $nik,
+						'nama'	=> $nama,
+						'jenis_kelamin'	=> $jenis_kelamin,
+						'tempat_lahir'	=> $tempat_lahir,
+						'tanggal_lahir'	=> $tanggal_lahir,
+						'goldar'	=> $goldar,
+						'agama'	=> $agama,
+						'hubungan'	=> $hubungan,
+						'status'	=> $status,
+						'dusun'	=> $dusun,
+						'alamat'	=> $alamat,
+						'pendidikan'	=> $pendidikan,
+						'pekerjaan'	=> $pekerjaan,
+						'kewarganegaraan'	=> $kewarganegaraan,
+						'id_admin'	=> $this->session->userdata('id'),
+						'update_at'	=> date('d-M-Y')
+					);
+				}
+			}
+			$this->load->model('ImportModel');
+			$insert = $this->ImportModel->insert($temp_data);
+			if ($insert) {
+				$this->session->set_flashdata('status', '<span class="glyphicon glyphicon-ok"></span> Data Berhasil di Import ke Database');
+				redirect($_SERVER['HTTP_REFERER']);
+			} else {
+				$this->session->set_flashdata('status', '<span class="glyphicon glyphicon-remove"></span> Terjadi Kesalahan');
+				redirect($_SERVER['HTTP_REFERER']);
+			}
+		} else {
+			echo "Tidak ada file yang masuk";
 		}
-
-		$inputFileName = './assets/' . $fileName;
-
-		try {
-			$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
-			$objReader = PHPExcel_IOFactory::createReader($inputFileType);
-			$objPHPExcel = $objReader->load($inputFileName);
-		} catch (Exception $e) {
-			die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . $e->getMessage());
-		}
-
-		$sheet = $objPHPExcel->getSheet(0);
-		$highestRow = $sheet->getHighestRow();
-		$highestColumn = $sheet->getHighestColumn();
-
-		for ($row = 2; $row <= $highestRow; $row++) {                  //  Read a row of data into an array                 
-			$rowData = $sheet->rangeToArray(
-				'A' . $row . ':' . $highestColumn . $row,
-				NULL,
-				TRUE,
-				FALSE
-			);
-
-			// Sesuaikan key array dengan nama kolom di database                                                         
-			// $data = array(
-			// 	"noinduk" => $rowData[0][0],
-			// 	"nama" => $rowData[0][1]
-			// );
-
-			$data = array(
-				'nik' => $rowData[0][0],
-				'nama' => $rowData[0][1],
-				'jenis_kelamin' => $rowData[0][2],
-				'tempat_lahir' => $rowData[0][3],
-				'tanggal_lahir' => $rowData[0][4],
-				'goldar' => $rowData[0][5],
-				'agama' => $rowData[0][6],
-				'hubungan' => $rowData[0][7],
-				'status' => $rowData[0][8],
-				'dusun' => $rowData[0][9],
-				'alamat' => $rowData[0][10],
-				'pendidikan' => $rowData[0][11],
-				'pekerjaan' => $rowData[0][12],
-				'kewarganegaraan' => $rowData[0][13],
-				'id_admin' => $this->session->userdata('id'),
-				'update_at' => date('d-M-Y'),
-			);
-
-			$insert = $this->db->insert("penduduk", $data);
-		}
-		redirect(base_url("Penduduk"));
 	}
 }

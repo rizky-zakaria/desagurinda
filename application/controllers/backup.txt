@@ -1,0 +1,68 @@
+public function importExcel()
+	{
+		$fileName = $_FILES['file']['name'];
+
+		$config['upload_path'] = './assets/'; //path upload
+		$config['file_name'] = $fileName;  // nama file
+		$config['allowed_types'] = 'xls|xlsx|csv'; //tipe file yang diperbolehkan
+		$config['max_size'] = 10000; // maksimal sizze
+
+		$this->load->library('upload'); //meload librari upload
+		$this->upload->initialize($config);
+
+		if (!$this->upload->do_upload('file')) {
+			echo $this->upload->display_errors();
+			exit();
+		}
+
+		$inputFileName = './assets/' . $fileName;
+
+		try {
+			$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+			$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+			$objPHPExcel = $objReader->load($inputFileName);
+		} catch (Exception $e) {
+			die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . $e->getMessage());
+		}
+
+		$sheet = $objPHPExcel->getSheet(0);
+		$highestRow = $sheet->getHighestRow();
+		$highestColumn = $sheet->getHighestColumn();
+
+		for ($row = 2; $row <= $highestRow; $row++) {                  //  Read a row of data into an array                 
+			$rowData = $sheet->rangeToArray(
+				'A' . $row . ':' . $highestColumn . $row,
+				NULL,
+				TRUE,
+				FALSE
+			);
+
+			// Sesuaikan key array dengan nama kolom di database                                                         
+			// $data = array(
+			// 	"noinduk" => $rowData[0][0],
+			// 	"nama" => $rowData[0][1]
+			// );
+
+			$data = array(
+				'nik' => $rowData[0][0],
+				'nama' => $rowData[0][1],
+				'jenis_kelamin' => $rowData[0][2],
+				'tempat_lahir' => $rowData[0][3],
+				'tanggal_lahir' => $rowData[0][4],
+				'goldar' => $rowData[0][5],
+				'agama' => $rowData[0][6],
+				'hubungan' => $rowData[0][7],
+				'status' => $rowData[0][8],
+				'dusun' => $rowData[0][9],
+				'alamat' => $rowData[0][10],
+				'pendidikan' => $rowData[0][11],
+				'pekerjaan' => $rowData[0][12],
+				'kewarganegaraan' => $rowData[0][13],
+				'id_admin' => $this->session->userdata('id'),
+				'update_at' => date('d-M-Y'),
+			);
+
+			$insert = $this->db->insert("penduduk", $data);
+		}
+		redirect(base_url("Penduduk"));
+	}
